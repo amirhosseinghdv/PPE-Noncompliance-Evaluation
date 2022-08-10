@@ -21,7 +21,7 @@ from models.yolox import Detector
 from utils.util import mkdir, label_color, get_img_path
 
 
-
+aval_aval = time.time()
 
 
 
