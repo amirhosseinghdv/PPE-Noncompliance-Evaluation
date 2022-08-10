@@ -1287,7 +1287,7 @@ def detect():
         return psnr  
 
 
-    generator = tf.keras.models.load_model('/content/drive/MyDrive/edsr/edsr_filter64_resblock8_valpsnr38.7.ckpt', custom_objects={'PSNR':PSNR})
+#     generator = tf.keras.models.load_model('/content/drive/MyDrive/edsr/edsr_filter64_resblock8_valpsnr38.7.ckpt', custom_objects={'PSNR':PSNR})
 
     yolo_total_time = 0
     yolo_number = 0
