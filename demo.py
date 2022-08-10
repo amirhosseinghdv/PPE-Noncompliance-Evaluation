@@ -1885,8 +1885,13 @@ def detect():
 
 
     print(' ')
-    print('Image Average Time: ', image_total_time/image_number)
-    print('Average FPS: ', 1 * image_number / image_total_time)
+    
+    akhar_akhar = time.time()
+    time_kol = akhar_akhar - aval_aval
+    print('Models Loading Time: ', time_kol - image_total_time)
+
+    print('Image Average Time: ', str(image_total_time/image_number)[0:4], ' s')
+    print('Average FPS: ', str(1 * image_number / image_total_time)[0:4])
 
     # print('yolo_total_time: ', yolo_total_time, '/', yolo_number, ': ', yolo_total_time/yolo_number)
     # print('classification_total_time: ', classification_total_time, '/', classification_number, ': ', classification_total_time/classification_number)
