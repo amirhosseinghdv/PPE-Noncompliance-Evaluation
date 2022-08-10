@@ -68,7 +68,7 @@ class YOLOX(nn.Module):
 
             if show_time:
                 s2 = sync_time(inputs)
-                print("[inference] batch={} time: {}s".format("x".join([str(i) for i in inputs.shape]), s2 - s1))
+#                 print("[inference] batch={} time: {}s".format("x".join([str(i) for i in inputs.shape]), s2 - s1))
 
             if targets is not None:
                 loss = self.loss(yolo_outputs, targets)
@@ -115,7 +115,7 @@ class Detector(object):
 
             if show_time:
                 s2 = time.time()
-                print("[pre_process] time {}".format(s2 - s1))
+#                 print("[pre_process] time {}".format(s2 - s1))
 
             inp_imgs = torch.from_numpy(inp_imgs).to(self.opt.device)
             yolo_outputs = self.model(inp_imgs, show_time=show_time)
@@ -126,7 +126,7 @@ class Detector(object):
                                           self.opt.nms_thresh, self.opt.label_name, img_ratios, img_shape)
             if show_time:
                 s4 = sync_time(inp_imgs)
-                print("[post_process] time {}".format(s4 - s3))
+#                 print("[post_process] time {}".format(s4 - s3))
         if batch_img:
             return predicts
         else:
