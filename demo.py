@@ -1869,6 +1869,17 @@ def detect():
                 imgg = cv2.imread(image_path)
 
 
+                color = 0      #label_color[opt.label_name.index(label)]
+                # show box
+                cv2.rectangle(imgg, (xminhuman, yminhuman), (xmaxhuman, ymaxhuman), color, 2)
+                # show label and conf
+                txt = 'W: ' + human_level_modif[0:4]
+                font = cv2.FONT_HERSHEY_SIMPLEX
+                txt_size = cv2.getTextSize(txt, font, 0.4, 2)[0]
+                cv2.rectangle(imgg, (xminhuman, yminhuman - txt_size[1] - 2), (xminhuman + txt_size[0], yminhuman - 2), color, -1)
+                cv2.putText(imgg, txt, (xminhuman, yminhuman - 2), font, 0.4, (255, 255, 255), thickness=1, lineType=cv2.LINE_AA)
+
+
                 if float(PPE_Danger_level) > 0.5:
                     color = (0,0,255)
                 else: 
