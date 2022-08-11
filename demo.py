@@ -1275,7 +1275,7 @@ def detect():
     img_list = get_img_path(img_dir, extend=".jpg")
     assert len(img_list) != 0, "cannot find img in {}".format(img_dir)
 
-    model = tf.keras.models.load_model('/content/PPE-Noncompliance-Detection/EfficientNet')
+    model = tf.keras.models.load_model('/content/drive/MyDrive/Classification/jadid_B0TVT_TFdata/B0_160_2ndPhaseAll3_ckpt')
 
     def PSNR(y_true, y_pred):
         mse = np.mean((y_true - y_pred) ** 2)
@@ -1613,7 +1613,7 @@ def detect():
 
         ### FUZZY start
 
-
+        human_shomare = 0
         for human_coordinates , Classification_confs in zip(FUZZY_human_coordinates_list, FUZZY_Classification_result):
 
             xminhuman = human_coordinates[0]
@@ -1765,6 +1765,7 @@ def detect():
 
             if float(human_level) > 0.45:
                 
+                human_shomare+=1
                 float_human_level = float(human_level)
                 float_PPE_Danger_level = float(PPE_Danger_level)
                 float_hat_Danger_level = float(hat_Danger_level)
@@ -1859,6 +1860,57 @@ def detect():
                 cv2.rectangle(img, (xminhuman, ymaxhuman - txt_size[1] - 2), (xminhuman + txt_size[0], ymaxhuman - 2), color, -1)
                 cv2.putText(img, txt_gloves_Danger_level, (xminhuman, ymaxhuman - 2), font, 0.4, (255, 255, 255), thickness=1, lineType=cv2.LINE_AA)
 
+
+
+
+             
+             
+             
+                imgg = cv2.imread(image_path)
+
+
+                if float(PPE_Danger_level) > 0.5:
+                    color = (0,0,255)
+                else: 
+                    color = 255
+                font = cv2.FONT_HERSHEY_SIMPLEX
+                txt_size = cv2.getTextSize(txt_PPE_Danger_level, font, 0.4, 2)[0]
+                cv2.rectangle(imgg, (xminhuman, ymaxhuman - txt_size[1] - txt_size[1] - txt_size[1] - txt_size[1] - 2), (xminhuman + txt_size[0], ymaxhuman - txt_size[1] - txt_size[1] - txt_size[1] - 2), color, -1)
+                cv2.putText(imgg, txt_PPE_Danger_level, (xminhuman, ymaxhuman - txt_size[1] - txt_size[1] - txt_size[1] - 2), font, 0.4, (255, 255, 255), thickness=1, lineType=cv2.LINE_AA)
+
+
+                if float(hat_Danger_level) > 0.5:
+                    color = (0,0,255)
+                else: 
+                    color = 255
+                font = cv2.FONT_HERSHEY_SIMPLEX
+                txt_size = cv2.getTextSize(txt_hat_Danger_level, font, 0.4, 2)[0]
+                cv2.rectangle(imgg, (xminhuman, ymaxhuman - txt_size[1] - txt_size[1] - txt_size[1] - 2), (xminhuman + txt_size[0], ymaxhuman - txt_size[1] - txt_size[1] - 2), color, -1)
+                cv2.putText(imgg, txt_hat_Danger_level, (xminhuman, ymaxhuman - txt_size[1] - txt_size[1] - 2), font, 0.4, (255, 255, 255), thickness=1, lineType=cv2.LINE_AA)
+
+
+                if float(vest_Danger_level) > 0.5:
+                    color = (0,0,255)
+                else: 
+                    color = 255
+                font = cv2.FONT_HERSHEY_SIMPLEX
+                txt_size = cv2.getTextSize(txt_vest_Danger_level, font, 0.4, 2)[0]
+                cv2.rectangle(imgg, (xminhuman, ymaxhuman - txt_size[1] - txt_size[1] - 2), (xminhuman + txt_size[0], ymaxhuman - txt_size[1] - 2), color, -1)
+                cv2.putText(imgg, txt_vest_Danger_level, (xminhuman, ymaxhuman - txt_size[1] - 2), font, 0.4, (255, 255, 255), thickness=1, lineType=cv2.LINE_AA)     
+
+
+                if float(gloves_Danger_level) > 0.5:
+                    color = (0,0,255)
+                else: 
+                    color = 255
+                font = cv2.FONT_HERSHEY_SIMPLEX
+                txt_size = cv2.getTextSize(txt_gloves_Danger_level, font, 0.4, 2)[0]
+                cv2.rectangle(imgg, (xminhuman, ymaxhuman - txt_size[1] - 2), (xminhuman + txt_size[0], ymaxhuman - 2), color, -1)
+                cv2.putText(imgg, txt_gloves_Danger_level, (xminhuman, ymaxhuman - 2), font, 0.4, (255, 255, 255), thickness=1, lineType=cv2.LINE_AA)
+
+
+                save_imgg = save_p + "/" + os.path.basename(image_path)[:-4] + '_' + str(human_shomare) + os.path.basename(image_path)[-4:]
+                cv2.imwrite(save_imgg, imgg)
 
 
 
