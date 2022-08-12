@@ -12,7 +12,14 @@
 ## 3. Model Zoo
 
 The YOLOX object detector and EfficientNet image classfier models can be downloaded
-from [GoogleDrive](https://drive.google.com/drive/folders/12JIuHlAcgz9kY_DWUv-mNlsUljSMmexW?usp=sharing)
+from [GoogleDrive](https://drive.google.com/drive/folders/12JIuHlAcgz9kY_DWUv-mNlsUljSMmexW?usp=sharing) .
+    
+ 
+## 4. System Inference
+
+
+
+
 
 |Model      |test size  |mAP<sup>val<br>0.5:0.95 |mAP<sup>test<br>0.5:0.95 | Params<br>(M) |
 | ------    |:---:      |:---:                   | :---:                   |:---:          |
@@ -104,31 +111,8 @@ implement [YOLOX](https://github.com/Megvii-BaseDetection/YOLOX). You can reprod
     
     5. run train.sh, evaluate.sh, predict.sh (are the same as COCO)
 
-## 4. Multi/One-class Multi-object Tracking(MOT)
 
-#### one-class/single-class MOT Dataset
-
-    DOING
-
-#### Multi-class MOT Dataset
-
-    DOING
-
-#### Train
-
-    DOING
-
-#### Evaluate
-
-    DOING
-
-#### Predict/Inference/Demo
-
-    DOING
 
 ## 5. Acknowledgement
 
-    https://github.com/Megvii-BaseDetection/YOLOX
-    https://github.com/PaddlePaddle/PaddleDetection
-    https://github.com/open-mmlab/mmdetection
-    https://github.com/xingyizhou/CenterNet
+    https://github.com/zhangming8/yolox-pytorch
