@@ -2,8 +2,8 @@
 
 ## 1. Notes
 
-    This is a pytorch easy re-implement of "YOLOX: Exceeding YOLO Series in 2021" [https://arxiv.org/abs/2107.08430]
-    The repo is still under development
+    This is the implementation of "Combining computer vision with fuzzy logic for real-time detection of personal protective equipment non-compliance"
+    The repo is still under development.
 
 ## 2. Environment
 
