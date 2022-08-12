@@ -9,11 +9,6 @@
 
     pytorch>=1.7.0, python>=3.6, Ubuntu/Windows, see more in 'requirements.txt'
     
-    cd /path/to/your/work
-    git clone https://github.com/zhangming8/yolox-pytorch.git
-    cd yolox-pytorch
-    download pre-train weights in Model Zoo to /path/to/your/work/weights
-
 ## 3. Object Detection
 
 #### Model Zoo
