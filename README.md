@@ -9,13 +9,10 @@
 
     pytorch>=1.7.0, python>=3.6, Ubuntu/Windows, see more in 'requirements.txt'
     
-## 3. Object Detection
+## 3. Model Zoo
 
-#### Model Zoo
-
-All weights can be downloaded
-from [GoogleDrive](https://drive.google.com/drive/folders/1qEMLzikH5JwRNRoHpeCa6BJBeSQ6xXCH?usp=sharing)
-or [BaiduDrive](https://pan.baidu.com/s/1UsbdnyVwRJhr9Vy1tmJLeQ) (code:bc72)
+The YOLOX object detector and EfficientNet image classfier models can be downloaded
+from [GoogleDrive](https://drive.google.com/drive/folders/12JIuHlAcgz9kY_DWUv-mNlsUljSMmexW?usp=sharing)
 
 |Model      |test size  |mAP<sup>val<br>0.5:0.95 |mAP<sup>test<br>0.5:0.95 | Params<br>(M) |
 | ------    |:---:      |:---:                   | :---:                   |:---:          |
