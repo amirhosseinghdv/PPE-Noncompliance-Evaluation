@@ -11,7 +11,7 @@
     
 ## 3. Model Zoo
 
-The YOLOX object detector and EfficientNet image classfier models can be downloaded of accessed
+The YOLOX object detector and EfficientNet image classfier models can be accessed or downloaded 
 from [GoogleDrive](https://drive.google.com/drive/folders/12JIuHlAcgz9kY_DWUv-mNlsUljSMmexW?usp=sharing) .
     
 <br/>
