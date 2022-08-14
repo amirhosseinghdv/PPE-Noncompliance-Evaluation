@@ -15,6 +15,6 @@ gdown.download(url, output, quiet=False)
 
 model = tf.keras.models.load_model('EfficientNet')
 
-print(model.input)
+a = model.input
 
-st.text('Done.')
+st.text(a)
