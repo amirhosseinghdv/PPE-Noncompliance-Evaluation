@@ -10,3 +10,4 @@ tensorboard
 mmcv
 pycocotools
 gdown
+tensorflow
