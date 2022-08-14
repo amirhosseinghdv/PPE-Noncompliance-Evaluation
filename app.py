@@ -31,9 +31,9 @@ gdown.download(url, output, quiet=False)
 
 
 
-os.mkdir('EfficientNet')
-os.mkdir('EfficientNet/assets')
-os.mkdir('EfficientNet/variables')
+os.mkdir('./EfficientNet')
+os.mkdir('./EfficientNet/assets')
+os.mkdir('./EfficientNet/variables')
 
 source = 'keras_metadata.pb'
 destination = 'EfficientNet/keras_metadata.pb'
