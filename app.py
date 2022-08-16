@@ -23,7 +23,7 @@ from utils.util import mkdir, label_color, get_img_path
 
 
 import streamlit as st
-st.text('This is TEXT')
+st.text('This is jadid TEXT')
 
 ##########################################################################################
 
