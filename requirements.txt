@@ -1,5 +1,7 @@
+freeglut3-dev
+libgtk2.0-dev
 numpy
-opencv-contrib-python
+opencv-python-headless
 tqdm
 easydict
 scipy
