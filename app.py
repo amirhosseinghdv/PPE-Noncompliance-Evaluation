@@ -16,7 +16,7 @@ import tensorflow as tf
 from tensorflow import keras
 
 
-from config import opt
+from config.py import opt
 from models.yolox import Detector
 from utils.util import mkdir, label_color, get_img_path
 
