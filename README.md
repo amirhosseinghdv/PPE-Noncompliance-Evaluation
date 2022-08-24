@@ -2,7 +2,7 @@
 
 ## 1. Notes
 
-    This is the implementation of "Combining computer vision with fuzzy logic for real-time detection of personal protective equipment non-compliance"
+    This is the implementation of "Combining computer vision with fuzzy logic for real-time detection of personal protective equipment non-use"
     The repo is still under development. Comprehensive system details and its evaluation will be provided as soon as the article is published.
 
 ## 2. Environment
