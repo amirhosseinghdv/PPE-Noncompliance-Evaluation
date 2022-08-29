@@ -14,7 +14,7 @@ import keras
 import tensorflow
 import tensorflow as tf
 from tensorflow import keras
-
+import torch
 
 from config import opt
 from models.yolox import Detector
@@ -37,13 +37,6 @@ import gdown
 import tensorflow as tf
 
 st.text('All imported.')
-
-# url = 'https://drive.google.com/uc?export=download&id=1upo5sgFRlAZiPYXm7-nf-yv6ajqkINCz'
-# output = 'YOLOX.pth'
-# gdown.download(url, output, quiet=False)
-
-
-# model = tf.keras.models.load_model('EfficientNet')
 
 
 # ########################################################################################################################
@@ -1264,6 +1257,19 @@ from tensorflow.keras.preprocessing.image import load_img
 from tempfile import NamedTemporaryFile
 st.set_option('deprecation.showfileUploaderEncoding', False)
 
+        
+        
+# url = 'https://drive.google.com/uc?export=download&id=1upo5sgFRlAZiPYXm7-nf-yv6ajqkINCz'
+# output = 'YOLOX.pth'
+# gdown.download(url, output, quiet=False)
+
+
+# model = tf.keras.models.load_model('EfficientNet')
+        
+        
+detector = Detector(opt)
+
+
 
 Uploaded_images = st.file_uploader("Please upload .jpg images containing construction workers", type='jpg', accept_multiple_files=True)
 
@@ -1271,18 +1277,34 @@ temp_file = NamedTemporaryFile(delete=False)
 if Uploaded_images:
     for image in Uploaded_images:
         temp_file.write(image.getvalue())
-        image = cv2.imread(temp_file.name)
-        st.text(str(type(image)))
 
 
-# for image in Uploaded_images:
-# #     st.text(str(image.shape))
-#     image_getvalue = image.read()
-#     st.text(str(type(image_getvalue)))
+        indexamirr+=1
+        if indexamirr >1:
+
+            yolo_number+=1
+            image_number+=1
+            classification_number+=1
 
 
 
-
-    
+        img = cv2.imread(temp_file.name)
+        results = detector.run(img, vis_thresh=opt.vis_thresh, show_time=True)        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
     
    
