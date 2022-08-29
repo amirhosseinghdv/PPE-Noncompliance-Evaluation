@@ -1246,7 +1246,7 @@ def vis_result(img, results):
 
 
 
-from keras.preprocessing.image import load_img
+from tensorflow.keras.preprocessing.image import load_img
 from tempfile import NamedTemporaryFile
 st.set_option('deprecation.showfileUploaderEncoding', False)
 
