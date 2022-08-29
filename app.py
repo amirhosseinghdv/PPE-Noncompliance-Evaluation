@@ -1248,9 +1248,9 @@ def vis_result(img, results):
 Uploaded_images = st.file_uploader("Please upload .jpg images containing construction workers", type=None, accept_multiple_files=True)
 
 for image in Uploaded_images:
-    st.image(image)
-    st.text(str(image.shape))
-
+#     st.text(str(image.shape))
+    image_getvalue = image.getvalue()
+    st.text(str(image_getvalue.shape))
 
 
 
