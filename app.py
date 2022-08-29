@@ -1245,5 +1245,12 @@ def vis_result(img, results):
     return img, list_human_conf_intbbox1bbox3bbox0bbox2, list_PPE_conf_intbbox1bbox3bbox0bbox2
 
 
+Uploaded_images = st.file_uploader("Please upload .jpg images containing construction workers.", type=None, accept_multiple_files=True, key=None, help=None, on_change=None, args=None, kwargs=None, *, disabled=False)
+
+st.text(str(type(Uploaded_images)))
+
+
+
+
 
 
