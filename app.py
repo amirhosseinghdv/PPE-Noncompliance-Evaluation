@@ -1251,12 +1251,14 @@ from tempfile import NamedTemporaryFile
 st.set_option('deprecation.showfileUploaderEncoding', False)
 
 
-Uploaded_images = st.file_uploader("Please upload .jpg images containing construction workers", type='jpg', accept_multiple_files=False)
+Uploaded_images = st.file_uploader("Please upload .jpg images containing construction workers", type='jpg', accept_multiple_files=True)
 
 temp_file = NamedTemporaryFile(delete=False)
 if Uploaded_images:
-    temp_file.write(Uploaded_images.getvalue())
-    image = load_img(temp_file.name)
+    for image in Uploaded_images:
+        temp_file.write(image.getvalue())
+        image = load_img(temp_file.name)
+        st.text(str(type(image)))
 
 
 # for image in Uploaded_images:
