@@ -1172,7 +1172,8 @@ def INFERENCE(human_yolo, hat_yolo, NOhat_yolo, vest_yolo, NOvest_yolo, gloves_y
 
   
   
-  
+  st.text('Fuzzy functions defined.')
+
   
 #   ########################################################################################################
   
