@@ -1250,7 +1250,7 @@ Uploaded_images = st.file_uploader("Please upload .jpg images containing constru
 for image in Uploaded_images:
 #     st.text(str(image.shape))
     image_getvalue = image.getvalue()
-    st.text(str(type(image_getvalue)))
+    st.text(str(type(image)))
 
 
 
