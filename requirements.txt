@@ -1,5 +1,5 @@
 numpy
-opencv-python-headless
+opencv-python
 tqdm
 easydict
 scipy
