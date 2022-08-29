@@ -1245,12 +1245,24 @@ def vis_result(img, results):
     return img, list_human_conf_intbbox1bbox3bbox0bbox2, list_PPE_conf_intbbox1bbox3bbox0bbox2
 
 
+
+from keras.preprocessing.image import load_img
+from tempfile import NamedTemporaryFile
+st.set_option('deprecation.showfileUploaderEncoding', False)
+
+
 Uploaded_images = st.file_uploader("Please upload .jpg images containing construction workers", type='jpg', accept_multiple_files=True)
 
-for image in Uploaded_images:
-#     st.text(str(image.shape))
-    image_getvalue = image.read()
-    st.text(str(type(image_getvalue)))
+temp_file = NamedTemporaryFile(delete=False)
+if Uploaded_images:
+    temp_file.write(Uploaded_images.getvalue())
+    image = load_img(temp_file.name)
+
+
+# for image in Uploaded_images:
+# #     st.text(str(image.shape))
+#     image_getvalue = image.read()
+#     st.text(str(type(image_getvalue)))
 
 
 
