@@ -79,7 +79,7 @@ opt.data_num_workers = 4
 
 opt.momentum = 0.9
 opt.vis_thresh = 0.3  # inference confidence, used in 'predict.py'
-opt.load_model = ''
+opt.load_model = 'YOLOX.pth'
 opt.ema = True  # False, Exponential Moving Average
 opt.grad_clip = dict(max_norm=35, norm_type=2)  # None, clip gradient makes training more stable
 opt.print_iter = 1  # print loss every 1 iteration
