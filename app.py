@@ -1249,7 +1249,7 @@ Uploaded_images = st.file_uploader("Please upload .jpg images containing constru
 
 for image in Uploaded_images:
     st.image(image)
-
+    st.text(str(image.shape))
 
 
 
