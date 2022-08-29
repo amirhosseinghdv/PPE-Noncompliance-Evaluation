@@ -1175,6 +1175,75 @@ st.text('Fuzzy functions imported.')
   
 #   ########################################################################################################
   
-  
-  
-  
+
+    
+def IOU(x1min, y1min, x1max, y1max, x2min, y2min, x2max, y2max):
+    xmin_intersection = max(x1min, x2min)
+    ymin_intersection = max(y1min, y2min)
+    xmax_intersection = min(x1max, x2max)
+    ymax_intersection = min(y1max, y2max)
+    intersection = (ymax_intersection - ymin_intersection) * (xmax_intersection - xmin_intersection)
+    union = ((y1max - y1min) * (x1max - x1min)) + ((y2max - y2min) * (x2max - x2min)) - intersection
+    if union == 0:
+        IOU = 0
+    else:
+        iou = intersection / union 
+        if 0 <= iou <= 1:
+            IOU = iou
+        else:
+            IOU = 0
+    return IOU   
+
+
+
+def vis_result(img, results):
+
+    list_human_conf_intbbox1bbox3bbox0bbox2 = []
+    list_PPE_conf_intbbox1bbox3bbox0bbox2 = []
+
+    for res_i, res in enumerate(results):
+
+    ### compliance start
+
+
+        if str(res[:3][0]) != 'human':
+
+            int_PPE_conf_intbbox1bbox3bbox0bbox2 = [] 
+            int_PPE_conf_intbbox1bbox3bbox0bbox2 = [str(res[:3][0]), res[:3][1], int(res[:3][2][1]), int(res[:3][2][3]), int(res[:3][2][0]), int(res[:3][2][2])]         
+            list_PPE_conf_intbbox1bbox3bbox0bbox2.append(int_PPE_conf_intbbox1bbox3bbox0bbox2)
+
+
+
+    ### compliance finish
+
+        labelamir, confamir, bboxamir = res[:3]
+
+        if str(labelamir) == 'human':
+
+            label, conf, bbox = res[:3]
+
+            bbox = [int(i) for i in bbox]
+            if len(res) > 3:
+                reid_feat = res[4]
+                print("reid feat dim {}".format(len(reid_feat)))
+
+            color = 0      #label_color[opt.label_name.index(label)]
+            # show box
+            # cv2.rectangle(img, (bbox[0], bbox[1]), (bbox[2], bbox[3]), color, 2)
+            # show label and conf
+
+            int_human_conf_intbbox1bbox3bbox0bbox2 = [] 
+            int_human_conf_intbbox1bbox3bbox0bbox2 = [conf, int(bbox[1]), int(bbox[3]), int(bbox[0]), int(bbox[2])]         
+            list_human_conf_intbbox1bbox3bbox0bbox2.append(int_human_conf_intbbox1bbox3bbox0bbox2)
+
+
+            txt = '{}:{:.2f}'.format(label, conf)
+            font = cv2.FONT_HERSHEY_SIMPLEX
+            txt_size = cv2.getTextSize(txt, font, 0.4, 2)[0]
+            # cv2.rectangle(img, (bbox[0], bbox[1] - txt_size[1] - 2), (bbox[0] + txt_size[0], bbox[1] - 2), color, -1)
+            # cv2.putText(img, txt, (bbox[0], bbox[1] - 2), font, 0.4, (255, 255, 255), thickness=1, lineType=cv2.LINE_AA)
+    return img, list_human_conf_intbbox1bbox3bbox0bbox2, list_PPE_conf_intbbox1bbox3bbox0bbox2
+
+
+
+
