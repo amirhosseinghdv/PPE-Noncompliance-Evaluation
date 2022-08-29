@@ -1171,7 +1171,7 @@ def INFERENCE(human_yolo, hat_yolo, NOhat_yolo, vest_yolo, NOvest_yolo, gloves_y
     return result_result, NOhat_result, NOvest_result, NOgloves_result, human_result
 
   
-st.text('This is TEXT')
+st.text('This is TEXT.')
   
 #   ########################################################################################################
   
