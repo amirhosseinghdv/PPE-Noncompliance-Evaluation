@@ -1251,7 +1251,7 @@ from tempfile import NamedTemporaryFile
 st.set_option('deprecation.showfileUploaderEncoding', False)
 
 
-Uploaded_images = st.file_uploader("Please upload .jpg images containing construction workers", type='jpg', accept_multiple_files=True)
+Uploaded_images = st.file_uploader("Please upload .jpg images containing construction workers", type='jpg', accept_multiple_files=False)
 
 temp_file = NamedTemporaryFile(delete=False)
 if Uploaded_images:
