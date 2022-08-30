@@ -1292,8 +1292,143 @@ if Uploaded_images:
         results = detector.run(img, vis_thresh=opt.vis_thresh, show_time=True)        
         
         
+        img, list_human_conf_intbbox1bbox3bbox0bbox2, list_PPE_conf_intbbox1bbox3bbox0bbox2 = vis_result(img, results)
+
+
+        ### compliance start
+        compliance_time_start = time.time()
+        yolox_matches=[]
+        for ppe in list_PPE_conf_intbbox1bbox3bbox0bbox2:
+            corresponding_human = 0
+
+            x1minamirr = ppe[4]
+            y1minamirr = ppe[2]
+            x1maxamirr = ppe[5]
+            y1maxamirr = ppe[3]
+
+            for human in list_human_conf_intbbox1bbox3bbox0bbox2:
+                Npo = 0
+                Nop = 0
+
+                x2minamirr = human[3]
+                y2minamirr = human[1]
+                x2maxamirr = human[4]
+                y2maxamirr = human[2]                
+
+                iou = IOU(x1minamirr, y1minamirr, x1maxamirr, y1maxamirr, x2minamirr, y2minamirr, x2maxamirr, y2maxamirr)
+
+                if iou > 0:
+
+                    confppe = ppe[1]
+                    confhuman = human[0]
+                    ppetype = str(ppe[0])
+                    for ppeee in list_PPE_conf_intbbox1bbox3bbox0bbox2:
+                        if (str(ppeee[0]) == ppetype) or (str(ppeee[0]) == 'NO' + ppetype) or (str(ppeee[0]) == ppetype[2:]):
+
+                            x1minppeee = ppeee[4]
+                            y1minppeee = ppeee[2]
+                            x1maxppeee = ppeee[5]
+                            y1maxppeee = ppeee[3]
+
+                            iou_po = IOU(x1minppeee, y1minppeee, x1maxppeee, y1maxppeee, x2minamirr, y2minamirr, x2maxamirr, y2maxamirr)
+                            if iou_po > 0:
+                                Npo+=1
+
+
+
+
+                    for humannn in list_human_conf_intbbox1bbox3bbox0bbox2:
+
+                        x2minhumannn = humannn[3]
+                        y2minhumannn = humannn[1]
+                        x2maxhumannn = humannn[4]
+                        y2maxhumannn = humannn[2]
+
+                        iou_op = IOU(x1minamirr, y1minamirr, x1maxamirr, y1maxamirr, x2minhumannn, y2minhumannn, x2maxhumannn, y2maxhumannn)
+                        if iou_op > 0:
+                            Nop+=1
+
+                    MatchVal = 0.1*iou + 0.7*(2/(Npo+Nop)) + 0.2*((confppe+confhuman)/2)
+                    candid_human = [MatchVal, confhuman, x2minamirr, y2minamirr, x2maxamirr, y2maxamirr]
+                    if (corresponding_human == 0) or (candid_human[0] > corresponding_human[0]):
+                        corresponding_human = candid_human
+
+            if corresponding_human != 0:
+                HUMANandPPE = corresponding_human + [ppetype, confppe, x1minamirr, y1minamirr, x1maxamirr, y1maxamirr]       
+                yolox_matches.append(HUMANandPPE)         
+                # print('HUMANandPPE', HUMANandPPE)
+            else:
+                # print('YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY')
+                NOTCR+=1
+
+
+        list_morattab = []
+        for i in range(len(yolox_matches)):
+            if i == 0:
+                list_morattab.append(yolox_matches[i])
+                for j in range(i+1,len(yolox_matches)):
+                    if yolox_matches[i][1] == yolox_matches[j][1]:
+                        list_morattab.append(yolox_matches[j])
+
+            else:
+                if yolox_matches[i] not in list_morattab:
+                    list_morattab.append(yolox_matches[i])
+                    for j in range(i+1,len(yolox_matches)):
+                        if yolox_matches[i][1] == yolox_matches[j][1]:
+                            list_morattab.append(yolox_matches[j])
+
         
-        
+    
+    
+        compliance_time_finish = time.time()
+        # print('compliance_time: ', compliance_time_finish-compliance_time_start)
+
+
+
+        ### compliance finish
+
+
+        save_p = output + "/" + image_path.split("/")[-2]
+
+        if indexamirr >1:
+            yolo_total_time_finish = time.time()
+            yolo_total_time += (yolo_total_time_finish - yolo_total_time_start)
+
+
+        mkdir(save_p)
+        save_img = save_p + "/" + os.path.basename(image_path)
+
+        Classification_time_startt = time.time()
+
+        if indexamirr >1:
+            classification_total_time_start = time.time()
+
+
+        imgtotal = image.load_img(image_path)
+        imgtotal = image.img_to_array(imgtotal)
+
+        human_list = []
+        FUZZY_human_coordinates_list = []
+        for i_human in list_human_conf_intbbox1bbox3bbox0bbox2:
+            FUZZY_human_coordinates = [i_human[3], i_human[1], i_human[4], i_human[2]]
+            humanimg = imgtotal[i_human[1]:i_human[2] , i_human[3]:i_human[4]]
+            humanimg = image.array_to_img(humanimg)
+            humanimg = humanimg.resize((80, 160))
+            humanimg = image.img_to_array(humanimg)
+            human_list.append(humanimg)
+            FUZZY_human_coordinates_list.append(FUZZY_human_coordinates)
+
+        if len(human_list) != 0 :
+            all_human = human_list[0]
+            all_human = np.expand_dims(all_human, axis=0)
+            # all_human = generator.predict_step(all_human)
+
+            for i in range(1, len(human_list)):
+              
+                # all_human = np.concatenate((all_human, generator.predict_step(np.expand_dims(human_list[i], axis=0))))
+
+                all_human = np.concatenate((all_human, np.expand_dims(human_list[i], axis=0)))
+
         
         
         
