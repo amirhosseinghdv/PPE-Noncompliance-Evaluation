@@ -1266,7 +1266,16 @@ gdown.download(url, outputt, quiet=False)
 
 model = tf.keras.models.load_model('EfficientNet')
         
-        
+
+yolo_total_time = 0
+yolo_number = 0
+classification_total_time = 0
+classification_number = 0
+image_total_time = 0
+image_number = 0
+indexamirr = 0    
+    
+    
 detector = Detector(opt)
 
 
