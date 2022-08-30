@@ -1259,12 +1259,12 @@ st.set_option('deprecation.showfileUploaderEncoding', False)
 
         
         
-# url = 'https://drive.google.com/uc?export=download&id=1upo5sgFRlAZiPYXm7-nf-yv6ajqkINCz'
-# output = 'YOLOX.pth'
-# gdown.download(url, output, quiet=False)
+url = 'https://drive.google.com/uc?export=download&id=1upo5sgFRlAZiPYXm7-nf-yv6ajqkINCz'
+outputt = 'YOLOX.pth'
+gdown.download(url, outputt, quiet=False)
 
 
-# model = tf.keras.models.load_model('EfficientNet')
+model = tf.keras.models.load_model('EfficientNet')
         
         
 detector = Detector(opt)
@@ -1388,15 +1388,11 @@ if Uploaded_images:
         ### compliance finish
 
 
-        save_p = output + "/" + image_path.split("/")[-2]
-
         if indexamirr >1:
             yolo_total_time_finish = time.time()
             yolo_total_time += (yolo_total_time_finish - yolo_total_time_start)
 
 
-        mkdir(save_p)
-        save_img = save_p + "/" + os.path.basename(image_path)
 
         Classification_time_startt = time.time()
 
@@ -1404,7 +1400,7 @@ if Uploaded_images:
             classification_total_time_start = time.time()
 
 
-        imgtotal = image.load_img(image_path)
+        imgtotal = image.load_img(temp_file.name)
         imgtotal = image.img_to_array(imgtotal)
 
         human_list = []
@@ -1429,17 +1425,360 @@ if Uploaded_images:
 
                 all_human = np.concatenate((all_human, np.expand_dims(human_list[i], axis=0)))
 
+                
+                
+        
+            All3_result = model.predict(all_human)
+            Hat_Classification_result = All3_result[0]
+            Vest_Classification_result = All3_result[1]
+            Gloves_Classification_result = All3_result[2]
+
+            if indexamirr >1:            
+                classification_total_time_finish = time.time()
+                classification_total_time += (classification_total_time_finish - classification_total_time_start)
+
+            Classification_time_finishh = time.time()
+            Classification_time = Classification_time_finishh - Classification_time_startt
+
+            Classification_result = []
+            FUZZY_Classification_result = []
+            for i in range(len(human_list)):
+                Gloves_conf = Gloves_Classification_result[i][0]
+                Hat_conf = Hat_Classification_result[i][0]
+                Vest_conf = Vest_Classification_result[i][0]
+
+                FUZZY_Classification_result.append([Hat_conf, Vest_conf, Gloves_conf])
+
+                if Gloves_conf >= 0.5:
+                    Gloves_label = 'Nogloves:' + str(Gloves_conf)[0:4]
+                else:
+                    Gloves_conf = 1 - Gloves_conf
+                    Gloves_label = 'NSgloves:' + str(Gloves_conf)[0:4]
+
+                if Hat_conf >= 0.5:
+                    Hat_label = 'Nohat:' + str(Hat_conf)[0:4]
+                else:
+                    Hat_conf = 1 - Hat_conf
+                    Hat_label = 'hat:' + str(Hat_conf)[0:4]
+
+                if Vest_conf >= 0.5:
+                    Vest_label = 'Novest:' + str(Vest_conf)[0:4]
+                else:
+                    Vest_conf = 1 - Vest_conf
+                    Vest_label = 'Vest:' + str(Vest_conf)[0:4]                    
+                # print('Vest_confAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:', Vest_conf)
+                Classification_result.append([Hat_label, Vest_label, Gloves_label])
+
         
         
         
         
         
         
-        
-        
-        
-        
-        
+        human_shomare = 0
+        for human_coordinates , Classification_confs in zip(FUZZY_human_coordinates_list, FUZZY_Classification_result):
+
+            xminhuman = human_coordinates[0]
+            yminhuman = human_coordinates[1]
+            xmaxhuman = human_coordinates[2]
+            ymaxhuman = human_coordinates[3]
+
+                
+            if Classification_confs[0] > 0.5:
+                NOhat_efficientnet = str((Classification_confs[0] - 0.5) * 2)[:4]
+                hat_efficientnet = str(0)
+                if NOhat_efficientnet == '1':
+                    NOhat_efficientnet = '1.0'
+                if float(NOhat_efficientnet) > 1:
+                    NOhat_efficientnet = str(0)
+
+            else:
+                NOhat_efficientnet = str(0)
+                hat_efficientnet = str((0.5 - Classification_confs[0]) * 2)[:4]
+                if hat_efficientnet == '1':
+                    hat_efficientnet = '1.0'
+                if float(hat_efficientnet) > 1:
+                    hat_efficientnet = str(0)
+
+            if Classification_confs[1] > 0.5:
+                NOvest_efficientnet = str((Classification_confs[1] - 0.5) * 2)[:4]
+                vest_efficientnet = str(0)
+                if NOvest_efficientnet == '1':
+                    NOvest_efficientnet = '1.0'
+                if float(NOvest_efficientnet) > 1:
+                    NOvest_efficientnet = str(0)
+
+            else:
+                NOvest_efficientnet = str(0)
+                vest_efficientnet = str((0.5 - Classification_confs[1]) * 2)[:4]
+                if vest_efficientnet == '1':
+                    vest_efficientnet = '1.0'
+                if float(vest_efficientnet) > 1:
+                    vest_efficientnet = str(0)
+
+
+            if Classification_confs[2] > 0.5:
+                NOgloves_efficientnet = str((Classification_confs[2] - 0.5) * 2)[:4]
+                gloves_efficientnet = str(0)
+                if NOgloves_efficientnet == '1':
+                    NOgloves_efficientnet = '1.0'
+                if float(NOgloves_efficientnet) > 1:
+                    NOgloves_efficientnet = str(0)
+
+            else:
+                NOgloves_efficientnet = str(0)
+                gloves_efficientnet = str((0.5 - Classification_confs[2]) * 2)[:4]
+                if gloves_efficientnet == '1':
+                    gloves_efficientnet = '1.0'
+                if float(gloves_efficientnet) > 1:
+                    gloves_efficientnet = str(0)
+
+            
+
+            corresponding_hats = ['0.19']
+            corresponding_NOhats = ['0.19']
+            corresponding_vests = ['0.19']
+            corresponding_NOvests = ['0.19']
+            corresponding_gloveses = ['0.19']
+            corresponding_NOgloveses = ['0.19']
+
+
+            for humanppe in list_morattab:
+
+
+                if [humanppe[2], humanppe[3], humanppe[4], humanppe[5]] == [xminhuman, yminhuman, xmaxhuman, ymaxhuman]:
+
+                    human_yolo = str(humanppe[1])[:4]
+                    if human_yolo == '1':
+                        human_yolo = '1.0'
+  
+                    if humanppe[6] == 'hat':
+                        neww = str(humanppe[7])[:4]
+                        if neww == '1':
+                            neww = '1.0'
+                        corresponding_hats.append(neww)
+
+                    if humanppe[6] == 'NOhat':
+                        neww = str(humanppe[7])[:4]
+                        if neww == '1':
+                            neww = '1.0'
+                        corresponding_NOhats.append(neww)
+
+                    if humanppe[6] == 'vest':
+                        neww = str(humanppe[7])[:4]
+                        if neww == '1':
+                            neww = '1.0'
+                        corresponding_vests.append(neww)
+
+                    if humanppe[6] == 'NOvest':
+                        neww = str(humanppe[7])[:4]
+                        if neww == '1':
+                            neww = '1.0'
+                        corresponding_NOvests.append(neww)
+
+                    if humanppe[6] == 'gloves':
+                        neww = str(humanppe[7])[:4]
+                        if neww == '1':
+                            neww = '1.0'
+                        corresponding_gloveses.append(neww)
+
+                    if humanppe[6] == 'NOgloves':
+                        neww = str(humanppe[7])[:4]
+                        if neww == '1':
+                            neww = '1.0'
+                        corresponding_NOgloveses.append(neww)
+            
+            
+            hat_yolo = max(corresponding_hats)
+            NOhat_yolo = max(corresponding_NOhats)
+            vest_yolo = max(corresponding_vests)
+            NOvest_yolo = max(corresponding_NOvests)
+            gloves_yolo = max(corresponding_gloveses)
+            NOgloves_yolo = max(corresponding_NOgloveses)
+
+
+
+            PPE_Danger_level, hat_Danger_level, vest_Danger_level, gloves_Danger_level, human_level = INFERENCE(human_yolo, hat_yolo, NOhat_yolo, vest_yolo, NOvest_yolo, gloves_yolo, NOgloves_yolo, hat_efficientnet, NOhat_efficientnet, vest_efficientnet, NOvest_efficientnet, gloves_efficientnet, NOgloves_efficientnet)
+
+
+            
+            
+            
+            
+            if float(human_level) > 0.45:
+                
+                human_shomare+=1
+                float_human_level = float(human_level)
+                float_PPE_Danger_level = float(PPE_Danger_level)
+                float_hat_Danger_level = float(hat_Danger_level)
+                float_vest_Danger_level = float(vest_Danger_level)
+                float_gloves_Danger_level = float(gloves_Danger_level)
+
+                if float_human_level >=0.5:
+                   human_level_modif = str(0.52 + (float_human_level-0.5)*1.51)
+                else:
+                   human_level_modif = str(0.5 - (0.5-float_human_level)*1.51)
+
+                if float_PPE_Danger_level >=0.5:
+                   PPE_Danger_level_modif = str(0.53 + (float_PPE_Danger_level-0.5)*1.22)
+                else:
+                   PPE_Danger_level_modif = str(0.48 - (0.5-float_PPE_Danger_level)*1.22)
+
+                if float_hat_Danger_level >=0.5:
+                   hat_Danger_level_modif = str(0.52 + (float_hat_Danger_level-0.5)*1.51)
+                else:
+                   hat_Danger_level_modif = str(0.49 - (0.5-float_hat_Danger_level)*1.51)
+
+                if float_vest_Danger_level >=0.5:
+                   vest_Danger_level_modif = str(0.52 + (float_vest_Danger_level-0.5)*1.51)
+                else:
+                   vest_Danger_level_modif = str(0.49 - (0.5-float_vest_Danger_level)*1.51)
+
+                if float_gloves_Danger_level >=0.5:
+                   gloves_Danger_level_modif = str(0.52 + (float_gloves_Danger_level-0.5)*1.51)
+                else:
+                   gloves_Danger_level_modif = str(0.49 - (0.5-float_gloves_Danger_level)*1.51)                                    
+
+
+
+                color = 0      #label_color[opt.label_name.index(label)]
+                # show box
+                cv2.rectangle(img, (xminhuman, yminhuman), (xmaxhuman, ymaxhuman), color, 2)
+                # show label and conf
+
+
+                txt = 'W: ' + human_level_modif[0:4]
+                font = cv2.FONT_HERSHEY_SIMPLEX
+                txt_size = cv2.getTextSize(txt, font, 0.4, 2)[0]
+                cv2.rectangle(img, (xminhuman, yminhuman - txt_size[1] - 2), (xminhuman + txt_size[0], yminhuman - 2), color, -1)
+                cv2.putText(img, txt, (xminhuman, yminhuman - 2), font, 0.4, (255, 255, 255), thickness=1, lineType=cv2.LINE_AA)
+
+
+
+                txt_PPE_Danger_level = 'PPE:' + PPE_Danger_level_modif[0:4]
+                txt_hat_Danger_level = 'H:' + hat_Danger_level_modif[0:4]
+                txt_vest_Danger_level = 'V:' + vest_Danger_level_modif[0:4]
+                txt_gloves_Danger_level = 'G:' + gloves_Danger_level_modif[0:4]
+
+            
+            
+            
+            
+            
+            
+                if float(PPE_Danger_level) > 0.5:
+                    color = (0,0,255)
+                else: 
+                    color = 255
+                font = cv2.FONT_HERSHEY_SIMPLEX
+                txt_size = cv2.getTextSize(txt_PPE_Danger_level, font, 0.4, 2)[0]
+                cv2.rectangle(img, (xminhuman, ymaxhuman - txt_size[1] - txt_size[1] - txt_size[1] - txt_size[1] - 2), (xminhuman + txt_size[0], ymaxhuman - txt_size[1] - txt_size[1] - txt_size[1] - 2), color, -1)
+                cv2.putText(img, txt_PPE_Danger_level, (xminhuman, ymaxhuman - txt_size[1] - txt_size[1] - txt_size[1] - 2), font, 0.4, (255, 255, 255), thickness=1, lineType=cv2.LINE_AA)
+
+
+                if float(hat_Danger_level) > 0.5:
+                    color = (0,0,255)
+                else: 
+                    color = 255
+                font = cv2.FONT_HERSHEY_SIMPLEX
+                txt_size = cv2.getTextSize(txt_hat_Danger_level, font, 0.4, 2)[0]
+                cv2.rectangle(img, (xminhuman, ymaxhuman - txt_size[1] - txt_size[1] - txt_size[1] - 2), (xminhuman + txt_size[0], ymaxhuman - txt_size[1] - txt_size[1] - 2), color, -1)
+                cv2.putText(img, txt_hat_Danger_level, (xminhuman, ymaxhuman - txt_size[1] - txt_size[1] - 2), font, 0.4, (255, 255, 255), thickness=1, lineType=cv2.LINE_AA)
+
+
+                if float(vest_Danger_level) > 0.5:
+                    color = (0,0,255)
+                else: 
+                    color = 255
+                font = cv2.FONT_HERSHEY_SIMPLEX
+                txt_size = cv2.getTextSize(txt_vest_Danger_level, font, 0.4, 2)[0]
+                cv2.rectangle(img, (xminhuman, ymaxhuman - txt_size[1] - txt_size[1] - 2), (xminhuman + txt_size[0], ymaxhuman - txt_size[1] - 2), color, -1)
+                cv2.putText(img, txt_vest_Danger_level, (xminhuman, ymaxhuman - txt_size[1] - 2), font, 0.4, (255, 255, 255), thickness=1, lineType=cv2.LINE_AA)     
+
+
+                if float(gloves_Danger_level) > 0.5:
+                    color = (0,0,255)
+                else: 
+                    color = 255
+                font = cv2.FONT_HERSHEY_SIMPLEX
+                txt_size = cv2.getTextSize(txt_gloves_Danger_level, font, 0.4, 2)[0]
+                cv2.rectangle(img, (xminhuman, ymaxhuman - txt_size[1] - 2), (xminhuman + txt_size[0], ymaxhuman - 2), color, -1)
+                cv2.putText(img, txt_gloves_Danger_level, (xminhuman, ymaxhuman - 2), font, 0.4, (255, 255, 255), thickness=1, lineType=cv2.LINE_AA)
+
+
+
+                
+                
+                
+                
+             
+             
+                imgg = cv2.imread(temp_file.name)
+
+
+                color = 0      #label_color[opt.label_name.index(label)]
+                # show box
+                cv2.rectangle(imgg, (xminhuman, yminhuman), (xmaxhuman, ymaxhuman), color, 2)
+                # show label and conf
+                txt = 'W: ' + human_level_modif[0:4]
+                font = cv2.FONT_HERSHEY_SIMPLEX
+                txt_size = cv2.getTextSize(txt, font, 0.4, 2)[0]
+                cv2.rectangle(imgg, (xminhuman, yminhuman - txt_size[1] - 2), (xminhuman + txt_size[0], yminhuman - 2), color, -1)
+                cv2.putText(imgg, txt, (xminhuman, yminhuman - 2), font, 0.4, (255, 255, 255), thickness=1, lineType=cv2.LINE_AA)
+
+
+                if float(PPE_Danger_level) > 0.5:
+                    color = (0,0,255)
+                else: 
+                    color = 255
+                font = cv2.FONT_HERSHEY_SIMPLEX
+                txt_size = cv2.getTextSize(txt_PPE_Danger_level, font, 0.4, 2)[0]
+                cv2.rectangle(imgg, (xminhuman, ymaxhuman - txt_size[1] - txt_size[1] - txt_size[1] - txt_size[1] - 2), (xminhuman + txt_size[0], ymaxhuman - txt_size[1] - txt_size[1] - txt_size[1] - 2), color, -1)
+                cv2.putText(imgg, txt_PPE_Danger_level, (xminhuman, ymaxhuman - txt_size[1] - txt_size[1] - txt_size[1] - 2), font, 0.4, (255, 255, 255), thickness=1, lineType=cv2.LINE_AA)
+
+
+                if float(hat_Danger_level) > 0.5:
+                    color = (0,0,255)
+                else: 
+                    color = 255
+                font = cv2.FONT_HERSHEY_SIMPLEX
+                txt_size = cv2.getTextSize(txt_hat_Danger_level, font, 0.4, 2)[0]
+                cv2.rectangle(imgg, (xminhuman, ymaxhuman - txt_size[1] - txt_size[1] - txt_size[1] - 2), (xminhuman + txt_size[0], ymaxhuman - txt_size[1] - txt_size[1] - 2), color, -1)
+                cv2.putText(imgg, txt_hat_Danger_level, (xminhuman, ymaxhuman - txt_size[1] - txt_size[1] - 2), font, 0.4, (255, 255, 255), thickness=1, lineType=cv2.LINE_AA)
+
+
+                if float(vest_Danger_level) > 0.5:
+                    color = (0,0,255)
+                else: 
+                    color = 255
+                font = cv2.FONT_HERSHEY_SIMPLEX
+                txt_size = cv2.getTextSize(txt_vest_Danger_level, font, 0.4, 2)[0]
+                cv2.rectangle(imgg, (xminhuman, ymaxhuman - txt_size[1] - txt_size[1] - 2), (xminhuman + txt_size[0], ymaxhuman - txt_size[1] - 2), color, -1)
+                cv2.putText(imgg, txt_vest_Danger_level, (xminhuman, ymaxhuman - txt_size[1] - 2), font, 0.4, (255, 255, 255), thickness=1, lineType=cv2.LINE_AA)     
+
+
+                if float(gloves_Danger_level) > 0.5:
+                    color = (0,0,255)
+                else: 
+                    color = 255
+                font = cv2.FONT_HERSHEY_SIMPLEX
+                txt_size = cv2.getTextSize(txt_gloves_Danger_level, font, 0.4, 2)[0]
+                cv2.rectangle(imgg, (xminhuman, ymaxhuman - txt_size[1] - 2), (xminhuman + txt_size[0], ymaxhuman - 2), color, -1)
+                cv2.putText(imgg, txt_gloves_Danger_level, (xminhuman, ymaxhuman - 2), font, 0.4, (255, 255, 255), thickness=1, lineType=cv2.LINE_AA)
+
+
+                save_imgg = save_p + "/" + os.path.basename(image_path)[:-4] + '_' + str(human_shomare) + os.path.basename(image_path)[-4:]
+                
+                st.image(imgg)
+            
+                                                           
+
+               
+        st.image(img)
+
+           
+           
+              
         
     
    
