@@ -23,6 +23,3 @@ Click on  [![colab](https://user-images.githubusercontent.com/4096485/86174089-b
 
 <br/>
 
-## 5. Acknowledgement
-
-    https://github.com/zhangming8/yolox-pytorch
