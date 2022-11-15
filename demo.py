@@ -1487,17 +1487,17 @@ def detect():
             classification_total_time_start = time.time()
 
 
-        imgtotal = image.load_img(image_path)
-        imgtotal = image.img_to_array(imgtotal)
+        imgtotal = tf.keras.utils.load_img(image_path)
+        imgtotal = tf.keras.utils.img_to_array(imgtotal)
 
         human_list = []
         FUZZY_human_coordinates_list = []
         for i_human in list_human_conf_intbbox1bbox3bbox0bbox2:
             FUZZY_human_coordinates = [i_human[3], i_human[1], i_human[4], i_human[2]]
             humanimg = imgtotal[i_human[1]:i_human[2] , i_human[3]:i_human[4]]
-            humanimg = image.array_to_img(humanimg)
+            humanimg = tf.keras.utils.array_to_img(humanimg)
             humanimg = humanimg.resize((80, 160))
-            humanimg = image.img_to_array(humanimg)
+            humanimg = tf.keras.utils.img_to_array(humanimg)
             human_list.append(humanimg)
             FUZZY_human_coordinates_list.append(FUZZY_human_coordinates)
 
