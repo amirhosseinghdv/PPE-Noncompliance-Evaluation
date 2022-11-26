@@ -9,5 +9,4 @@ torchvision
 tensorboard
 mmcv
 pycocotools
-gdown==4.3.0
 tensorflow
