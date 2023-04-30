@@ -26,7 +26,7 @@ def update_nano_tiny(cfg, inp_params):
 opt = EasyDict()
 
 opt.exp_id = "coco_CSPDarknet-s_640x640"  # experiment name, you can change it to any other name
-opt.dataset_path = "/content/yolox-pytorch/DataAmir"  # COCO detection
+opt.dataset_path = "/content/PPE-Noncompliance-Evaluation/DataAmir"  # COCO detection
 # opt.dataset_path = r"D:\work\public_dataset\coco2017"  # Windows system
 opt.backbone = "CSPDarknet-s"  # CSPDarknet-nano, CSPDarknet-tiny, CSPDarknet-s, CSPDarknet-m, l, x
 opt.input_size = (640, 640)
