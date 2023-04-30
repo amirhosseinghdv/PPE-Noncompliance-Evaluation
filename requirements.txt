@@ -7,6 +7,6 @@ progress
 torch>=1.7.0  # to use AMP
 torchvision
 tensorboard
-mmcv
+mmcv==1.4.2
 pycocotools
 tensorflow
