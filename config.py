@@ -39,7 +39,7 @@ opt.num_epochs = 300
 
 # coco 80 classes
 opt.label_name = [
-'human',
+'worker',
 'NOhat',
 'hat',
 'vest',
