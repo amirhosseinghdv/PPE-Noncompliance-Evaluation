@@ -1275,7 +1275,7 @@ def detect():
     img_list = get_img_path(img_dir, extend=".jpg")
     assert len(img_list) != 0, "cannot find img in {}".format(img_dir)
 
-    model = tf.keras.models.load_model('/content/PPE-Noncompliance-Detection/EfficientNet')
+    model = tf.keras.models.load_model('/content/PPE-Noncompliance-Evaluation/EfficientNet')
 
     def PSNR(y_true, y_pred):
         mse = np.mean((y_true - y_pred) ** 2)
