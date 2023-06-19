@@ -1195,7 +1195,7 @@ def vis_result(img, results):
     ### compliance start
 
 
-        if str(res[:3][0]) != 'human':
+        if str(res[:3][0]) != 'worker':
 
             int_PPE_conf_intbbox1bbox3bbox0bbox2 = [] 
             int_PPE_conf_intbbox1bbox3bbox0bbox2 = [str(res[:3][0]), res[:3][1], int(res[:3][2][1]), int(res[:3][2][3]), int(res[:3][2][0]), int(res[:3][2][2])]         
@@ -1207,7 +1207,7 @@ def vis_result(img, results):
 
         labelamir, confamir, bboxamir = res[:3]
 
-        if str(labelamir) == 'human':
+        if str(labelamir) == 'worker':
 
             label, conf, bbox = res[:3]
 
